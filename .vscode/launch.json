@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Launch (OnnxAsr.Example)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/OnnxAsr.Example/bin/Debug/net9.0/OnnxAsr.Example.dll",
+            "args": [
+                "gigaam-v2-ctc",
+                "e:\\Work\\Dimq1\\source\\Python\\gigaam-v2-onnx\\",
+                "e:\\Work\\Dimq1\\source\\Python\\gigaam-v2-onnx\\test.wav"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": ".NET Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        }
+    ]
+}

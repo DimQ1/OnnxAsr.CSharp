@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OnnxAsr.Example": {
+      "commandName": "Project",
+      "commandLineArgs": "\"gigaam-v2-ctc\" \"e:\\\\Work\\\\Dimq1\\\\source\\\\Python\\\\gigaam-v2-onnx\\\\\"  \"e:\\\\Work\\\\Dimq1\\\\source\\\\Python\\\\gigaam-v2-onnx\\\\test.wav\""
+    }
+  }
+}
