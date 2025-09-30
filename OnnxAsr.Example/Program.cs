@@ -22,7 +22,7 @@ Console.WriteLine($"Processing {wavFile}");
 Asr asr;
 try
 {
-    asr = Loader.LoadModel(modelName, modelPath);
+    asr = Loader.LoadModel(modelName, modelPath, sessOptions: GetSessionOptions());
 }
 catch (Exception ex)
 {
@@ -194,56 +194,56 @@ try
 
             Console.WriteLine($"Grouped into {words.Count} words");
 
-            // Now segment words by time gaps
-            var sentences = new List<string>();
-            var currentSentenceWords = new List<string>();
+            //// Now segment words by time gaps
+            //var sentences = new List<string>();
+            //var currentSentenceWords = new List<string>();
 
-            for (int i = 0; i < words.Count; i++)
-            {
-                var (word, start, end) = words[i];
-                currentSentenceWords.Add(word);
+            //for (int i = 0; i < words.Count; i++)
+            //{
+            //    var (word, start, end) = words[i];
+            //    currentSentenceWords.Add(word);
 
-                // Check if there's a significant gap to next word
-                if (i < words.Count - 1)
-                {
-                    var nextStart = words[i + 1].startTime;
-                    var gap = nextStart - end;
+            //    // Check if there's a significant gap to next word
+            //    if (i < words.Count - 1)
+            //    {
+            //        var nextStart = words[i + 1].startTime;
+            //        var gap = nextStart - end;
 
-                    Console.WriteLine($"Word '{word}' ends at {end:F2}s, next starts at {nextStart:F2}s, gap: {gap:F2}s");
+            //        Console.WriteLine($"Word '{word}' ends at {end:F2}s, next starts at {nextStart:F2}s, gap: {gap:F2}s");
 
-                    if (gap > 0.05f) // Gap threshold
-                    {
-                        var sentence = string.Join(" ", currentSentenceWords);
-                        if (!string.IsNullOrWhiteSpace(sentence))
-                        {
-                            sentences.Add(sentence);
-                        }
-                        currentSentenceWords.Clear();
-                        Console.WriteLine($"Sentence break detected, sentences so far: {sentences.Count}");
-                    }
-                }
-            }
+            //        if (gap > 0.05f) // Gap threshold
+            //        {
+            //            var sentence = string.Join(" ", currentSentenceWords);
+            //            if (!string.IsNullOrWhiteSpace(sentence))
+            //            {
+            //                sentences.Add(sentence);
+            //            }
+            //            currentSentenceWords.Clear();
+            //            Console.WriteLine($"Sentence break detected, sentences so far: {sentences.Count}");
+            //        }
+            //    }
+            //}
 
-            // Add the last sentence
-            if (currentSentenceWords.Count > 0)
-            {
-                var sentence = string.Join(" ", currentSentenceWords);
-                if (!string.IsNullOrWhiteSpace(sentence))
-                {
-                    sentences.Add(sentence);
-                }
-            }
+            //// Add the last sentence
+            //if (currentSentenceWords.Count > 0)
+            //{
+            //    var sentence = string.Join(" ", currentSentenceWords);
+            //    if (!string.IsNullOrWhiteSpace(sentence))
+            //    {
+            //        sentences.Add(sentence);
+            //    }
+            //}
 
-            Console.WriteLine($"Total sentences: {sentences.Count}");
+            //Console.WriteLine($"Total sentences: {sentences.Count}");
 
-            if (sentences.Count > 1)
-            {
-                Console.WriteLine("\nSentences:");
-                for (int i = 0; i < sentences.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {sentences[i]}");
-                }
-            }
+            //if (sentences.Count > 1)
+            //{
+            //    Console.WriteLine("\nSentences:");
+            //    for (int i = 0; i < sentences.Count; i++)
+            //    {
+            //        Console.WriteLine($"{i + 1}. {sentences[i]}");
+            //    }
+            //}
         }
 
         if (combinedTimestamps != null && combinedTimestamps.Length > 0)
@@ -263,4 +263,12 @@ try
 catch (Exception ex)
 {
     Console.WriteLine("Recognition failed: \n" + ex.ToString());
+}
+
+static Microsoft.ML.OnnxRuntime.SessionOptions GetSessionOptions()
+{
+    var sessionOptions = new Microsoft.ML.OnnxRuntime.SessionOptions();
+    sessionOptions.AppendExecutionProvider_CUDA(0);
+
+    return sessionOptions;
 }

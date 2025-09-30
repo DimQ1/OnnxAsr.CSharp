@@ -8,9 +8,9 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/OnnxAsr.Example/bin/Debug/net9.0/OnnxAsr.Example.dll",
             "args": [
-                "gigaam-v2-ctc",
-                "e:\\Work\\Dimq1\\source\\Python\\gigaam-v2-onnx\\",
-                "e:\\Work\\Dimq1\\source\\Python\\gigaam-v2-onnx\\test.wav"
+                "gigaam-v2-rnnt",
+                "e:\\Learnig\\Models\\gigaam-v2-onnx",
+                "e:\\Learnig\\TestAudio\\internet.speech.wav"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",

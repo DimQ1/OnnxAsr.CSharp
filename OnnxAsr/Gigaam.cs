@@ -235,6 +235,7 @@ public class GigaamV2Rnnt : AsrWithTransducerDecoding<List<Tensor<float>>>
 
             using var decoderResults = _decoder.Run(decoderInputs);
             decoderOut = decoderResults.First(r => r.Name == "dec").AsTensor<float>();
+            decoderOut = new DenseTensor<float>(decoderOut.ToArray(), new int[] { 1, 320, 1 });
             var state1 = decoderResults.First(r => r.Name == "h").AsTensor<float>();
             var state2 = decoderResults.First(r => r.Name == "c").AsTensor<float>();
             newState = new List<Tensor<float>> { decoderOut, state1, state2 };
@@ -242,14 +243,15 @@ public class GigaamV2Rnnt : AsrWithTransducerDecoding<List<Tensor<float>>>
         else
         {
             decoderOut = prevState[0];
+            decoderOut = new DenseTensor<float>(decoderOut.ToArray(), new int[] { 1, 320, 1 });
             newState = prevState;
         }
 
         // Extract encoder out at time t
-        var encoderSlice = new DenseTensor<float>(new float[encoderOut.Dimensions[2]], new int[] { 1, 1, encoderOut.Dimensions[2] });
-        for (int d = 0; d < encoderOut.Dimensions[2]; d++)
+        var encoderSlice = new DenseTensor<float>(new float[encoderOut.Dimensions[1]], new int[] { 1, encoderOut.Dimensions[1], 1 });
+        for (int d = 0; d < encoderOut.Dimensions[1]; d++)
         {
-            encoderSlice[0, 0, d] = encoderOut[0, t, d];
+            encoderSlice[0, d, 0] = encoderOut[t, d];
         }
 
         var joinerInputs = new List<NamedOnnxValue>
